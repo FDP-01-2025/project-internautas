@@ -1,4 +1,4 @@
-# Proyecto de C++ - [Nombre del Juego]
+# Proyecto de C++ - Monopoly
 
 ## Descripción del Proyecto
 

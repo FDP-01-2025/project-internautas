@@ -1,0 +1,9 @@
+Funciones a utilizar y desarrollar para desarrollar el juego: 
+
+
+TIPOS DE FUNCIONES:
+Funciones Globales: Pueden ser utilizadas en todas las Funciones
+Funciones Locales: Solo existen dentro de la funcion en la que se declaran
+Funciones Locales Estaticas: Variable declarada con la palabra clave "static". 
+                    Mantiene su valor entre llamadas y se inicializa una sola vez.
+

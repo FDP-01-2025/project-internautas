@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include "Tablero.h" //Llamamos nuestra libreria
+#include "player.h" //Llamamos nuestra libreria
 
 using namespace std;
 

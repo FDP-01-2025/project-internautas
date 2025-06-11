@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include "Tablero.h"
+#include "Player.h"
 
 using namespace std;
 

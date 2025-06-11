@@ -7,20 +7,22 @@ Funciones Locales: Solo existen dentro de la funcion en la que se declaran
 Funciones Locales Estaticas: Variable declarada con la palabra clave "static". 
                     Mantiene su valor entre llamadas y se inicializa una sola vez.
 
+
+
 FUNCIONES:
 
 
 1. JUGADORES
 
 - crearJugadores
-- mostrarEstadoJugador
+- mostrarEstadoJugador              //Carlos
 - jugadorEnBancarrota (bool)
 - eliminarJugador (si entra en banca rota)
 
 2. TURNOS Y MOVIMIENTOS
 
 - turnoJugador
-- lanzar dados (con un rand)
+- lanzar dados (con un rand)           //Axel
 - moverJugador
 - cambiarTurno
 
@@ -28,49 +30,49 @@ FUNCIONES:
 
 - cargarTablero
 - mostrarTablero
-- propiedadDisponible (bool)
+- propiedadDisponible (bool)        //Carlos
 - comprarPropiedad
 - pagarRenta
 
 4. CASA Y HOTELES
 
 - contruirCasa
-- construirHotel
+- construirHotel        //Rodri
 - puedeConstruir 
 - contarCasas
 
 5. ECONOMIA 
 
 - modificarDinero
-- tieneDineroSuficiente
+- tieneDineroSuficiente     //Rodri
 - pagarMulta
 
 6. CARTAS 
 
 - sacarCartaSuerte
-- sacarCartaComunidad
+- sacarCartaComunidad       //Axel
 - aplicarEfectoCarta
 
 7. EVENTOS ESPECIALES
 
 - irACarcel
-- estarEnCarcel
+- estarEnCarcel             //Sofia
 - intentarSalirDeCarcel
 
 8. CARGAR Y GUARDAR PARTIDA
 
-- guardarPartida
+- guardarPartida            //Carlos
 - cargarPartida
 
 9. FIN DE juego
 
-- juegoTerminado
+- juegoTerminado            //Carlos
 - obtenerGanador
 
 10. CONSOLA
 
 Aqui deberemos incluir una libreria para que la consola tenga un tamanio predefinido
-y se vea bien desde cualquier computadora.
+y se vea bien desde cualquier computadora.                                                      //Sofia
 Tambien para que el juego se vea mas dinamico, usar colores haciendo uso de la tabla ASCII. 
 
 

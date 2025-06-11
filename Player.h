@@ -1,6 +1,6 @@
 //Definimos nuestra libreria
-#ifndef TABLERO_H
-#define TABLERO_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <string>
 

@@ -2,6 +2,22 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+
+/*
+FUNCIONES A DESARROLLAR AQUI:
+
+crearJugadores
+
+mostrarEstadoJugador
+                                //Carlos todo
+jugadorEnBancarrota
+
+eliminarJugador
+
+RECORDAR HACERLO EN INGLES
+
+*/
+
 #include <string>
 
 using namespace std;

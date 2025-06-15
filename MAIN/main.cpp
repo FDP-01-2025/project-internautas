@@ -1,5 +1,5 @@
-#include "Player.h"
-#include "Board.h"
+#include "src/Player.h"
+#include "src/Board.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>

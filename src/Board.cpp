@@ -5,19 +5,6 @@
 using namespace std;
 
 
-//Funcion para llenar una casilla con datos temporales
-void asignBox (Box &box, int id)
-{
-    sprintf(box.Name, "Box %d", id);
-
-    box.Type = 0; //Tipo de casilla, 0 para calle. 
-    box.Price = 100 + id * 10; // Precio de la casilla
-    box.Rent = 100 + id;    //Renta a pagar de la casilla
-    box.Owner = -1;         //Propietario (-1 para indicar que esta sin propietario)
-    box.Houses = 4;         //Cantidad de casas en la casilla
-    box.Hotel = false;      //No hay hotel, de momento falso
-}
-
 //1) Asignar datos a UNA casilla del id 0‑39
 void asignBox(Box &box, int id)
 {
@@ -140,3 +127,4 @@ void showBoard(Box board[SIZE][SIZE])
         cout << '\n';
     }
 }
+

@@ -23,7 +23,7 @@ RECORDAR HACERLO EN INGLES
 using namespace std;
 
 //definimos el maximo de propiedades
-const int MAX_PROPERTIES = 28;
+const int MAX_PROPERTIES = 29;
 
 //Data estructural para el jugador
 struct Player 

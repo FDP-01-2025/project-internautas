@@ -44,20 +44,18 @@ FUNCIONES:
 5. ECONOMIA 
 
 - modificarDinero
-- tieneDineroSuficiente     //Rodri
-- pagarMulta
+- tieneDineroSuficiente  (bool)    //Rodri
 
 6. CARTAS 
 
 - sacarCartaSuerte
-- sacarCartaComunidad       //Axel
+- sacarCartaComunidad      //Axel
 - aplicarEfectoCarta
 
 7. EVENTOS ESPECIALES
 
 - irACarcel
 - estarEnCarcel             //Sofia
-- intentarSalirDeCarcel
 
 8. CARGAR Y GUARDAR PARTIDA
 

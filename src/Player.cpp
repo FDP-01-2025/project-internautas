@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include "player.h" //Llamamos nuestra libreria
+#include "Player.h" //Llamamos nuestra libreria
 
 using namespace std;
 
@@ -18,14 +18,14 @@ void createPlayers(Player Players[], int Amount)
 
         //Asignacion de datos para el jugador
         Players[i].Cash = 1500;
-        Players[i].Position = 0;       
+        Players[i].Position = 0;
         Players[i].inJail = false;
         Players[i].turnsInJail = 0;
 
         // Asignacion de propiedades, incializamos en -1 para mejor lectura de datos
         for(int j = 0; j < MAX_PROPERTIES; j++)
         {
-            Players[i].Properties[j]= -1;
+            Players[i].Properties[j]= 0;
         }
     }
 }

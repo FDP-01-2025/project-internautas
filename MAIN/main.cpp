@@ -9,7 +9,5 @@ int main() {
     cout << "Tablero cargado.\n";
     showBoard(board);
     cout << "Tablero mostrado.\n";
-
-    cin.get();
     return 0;
 }

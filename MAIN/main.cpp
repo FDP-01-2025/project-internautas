@@ -1,33 +1,15 @@
-#include "src/Player.h"
-#include "src/Board.h"
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <string>
-
-
+#include "../src/Board.h"
 using namespace std;
 
-//Maximos jugadores : 2
-const int MAX_PLAYERS = 2;
-int main ()
-{
-    //Pedimos datos de cuantos jugadores seran
-    Player Players[MAX_PLAYERS];
-    int amountPlayers = MAX_PLAYERS;
-    cout << "WELCOME TO MONOPOLY";
-    
+int main() {
+    cout << "Iniciando juego...\n";
+    Box board[SIZE][SIZE];
+    loadBoard(board);
+    cout << "Tablero cargado.\n";
+    showBoard(board);
+    cout << "Tablero mostrado.\n";
 
-    //Bucle para validacion de datos evitando errores o mas de 5 o menos de 1 jugador
-
-    //Llamamos nuestra funcion createPlayers
-    createPlayers(Players, amountPlayers);
-
-    //Imprimimos los datos de cada jugador
-    for (int i= 0; i < amountPlayers; i++)
-    {
-    cout << "\nJugador " << i + 1 << ": " << Players[i].Name << ", $" << Players[i].Cash;
-    }
-    
-   return 0;
+    cin.get();
+    return 0;
 }

@@ -23,17 +23,20 @@ RECORDAR HACERLO EN INGLES
 using namespace std;
 
 //definimos el maximo de propiedades
-const int MAX_PROPERTIES = 29;
+const int MAX_PROPERTIES = 20;
+const int MAX_CARDS = 3;
 
 //Data estructural para el jugador
 struct Player 
 {
-    string Name;
+    char Name [25];
 
     int Cash;
     int Position;
     int Properties[MAX_PROPERTIES];
     int totalProperties;
+    int Cards [MAX_CARDS]; //Cuantas cartas de tipo salir de carcel puede almacernar (manejar segun id)
+    int numCards;   // conteo de cartas, pues el array de arriba no siempre estara lleno.
     bool inJail;
     int turnsInJail;
 };

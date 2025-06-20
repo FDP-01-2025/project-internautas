@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../src/Board.h"
+#include "../src/Player.h"
 using namespace std;
 
 int main() {

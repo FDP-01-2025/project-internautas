@@ -9,7 +9,7 @@ const int TILES = 20;
 // Tipos de casilla
 const int TYPE_GO = 0;
 const int TYPE_PROPERTY = 1;
-const int TYPE_CARD = 2;
+const int TYPE_CARD = 2;        
 const int TYPE_TAX = 3;
 const int TYPE_JAIL = 4;
 const int TYPE_GOTOJAIL = 5;
@@ -44,12 +44,14 @@ Box asignBox(int id)
         TYPE_PARKING, TYPE_PROPERTY, TYPE_TAX, TYPE_PROPERTY, TYPE_PROPERTY,
         TYPE_GOTOJAIL, TYPE_PROPERTY, TYPE_CARD, TYPE_PROPERTY, TYPE_PROPERTY};
 
+    //Precio de cada casilla 
     int prices[TILES] = {
         0, 100, 0, 120, 0,
         150, 0, 180, 200, 0,
         0, 220, 0, 240, 260,
         0, 280, 0, 300, 320};
 
+    // Renta de cada casilla
     int rents[TILES] = {
         0, 10, 0, 12, 50,
         14, 0, 16, 18, 0,

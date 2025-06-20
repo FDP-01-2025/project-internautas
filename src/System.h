@@ -9,10 +9,7 @@ juegoTerminado - Carlos
 
 obtenerGanador - Carlos
 
-configurarConsola - Sofi
+Guardar datos de jugador - Carlos
 
-imprimirConColor - Sofi
-
-RECORDAR HACERLO EN INGLES
-
+Leer datos de jugador - Carlos
 */

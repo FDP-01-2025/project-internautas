@@ -1,55 +1,44 @@
 #include <iostream>
 #include <string>
-#include <limits> // Necesario para la validación de entrada
+#include <limits>  // Necesario para la validación de entrada
+#include <cstdlib> // Necesario para system()
+
 #include "../src/Constants.h"
 #include "../src/Player.h"
 #include "../src/GameIO.h"
 #include "../src/Board.h"
 #include "../src/GameActions.h"
 
-using namespace std;
+// Le dice a windows.h que no incluya APIs innecesarias que causan el conflicto.
+#define WIN32_LEAN_AND_MEAN
 
-// ===================================================================
-// ARCHIVO PRINCIPAL DEL JUEGO (PUNTO DE ENTRADA)
-// ===================================================================
+// Se incluye solo en Windows para las funciones de consola
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+using namespace std;
 
 // --- Prototipos de funciones auxiliares del main ---
 GameState checkGameOver(GameState gs);
 void showWinner(GameState gs);
-
-// Función de utilidad para obtener una entrada numérica válida del usuario.
-// Garantiza que la entrada es un número y está en el rango [min, max].
-int getValidInput(int min, int max)
-{
-    int choice;
-    do
-    {
-        cout << "Elige una opcion: ";
-        cin >> choice;
-
-        if (cin.fail())
-        { // Si la entrada no es un número
-            cout << "Error: Por favor, ingresa solo numeros." << endl;
-            cin.clear();                                         // Limpia el flag de error de cin.
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descarta la entrada incorrecta del buffer.
-            choice = -1;                                         // Asigna un valor inválido para que el bucle continúe.
-        }
-        else if (choice < min || choice > max)
-        { // Si el número está fuera de rango
-            cout << "Error: Opcion fuera de rango. Intenta de nuevo." << endl;
-        }
-    } while (choice < min || choice > max);
-    return choice;
-}
+int getValidInput(int min, int max);
 
 // --- Función Principal ---
 int main()
 {
+// --- Configuración Inicial de la Consola ---
+#ifdef _WIN32
+    // Prepara la consola para mostrar símbolos Unicode (UTF-8)
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+#endif
+
     initializeRandom();
     GameState gameState;
 
     cout << "========================================" << endl;
-    cout << "      BIENVENIDO A MINIMOPOLY" << endl;
+    cout << "      BIENVENIDO A MINIMOPOLY 🏁" << endl; // Emoji añadido
     cout << "========================================" << endl;
 
     // Lógica de inicio: Comprueba si hay una partida guardada.
@@ -60,8 +49,8 @@ int main()
         cout << " -> " << names.p1_name << " vs " << names.p2_name << endl;
 
         cout << "\nQue deseas hacer?" << endl;
-        cout << "1. Cargar partida" << endl;
-        cout << "2. Empezar una nueva partida (se borrara la anterior)" << endl;
+        cout << "1. Cargar partida 💾" << endl;                                     // Emoji añadido
+        cout << "2. Empezar una nueva partida (se borrara la anterior) 🚮" << endl; // Emoji añadido
         int choice = getValidInput(1, 2);
 
         if (choice == 1)
@@ -104,23 +93,25 @@ int main()
     while (!gameState.isGameOver)
     {
         Player currentPlayer = gameState.players[gameState.currentPlayerIndex];
+        Player otherPlayer = gameState.players[(gameState.currentPlayerIndex + 1) % NUM_PLAYERS];
+
         cout << "\n==================== TURNO DE " << currentPlayer.name << " ====================" << endl;
-        printBoard(gameState.players[0], gameState.players[1]);
+        printBoard(currentPlayer, otherPlayer);
 
         // Menú de acciones del turno
         bool endTurn = false;
         while (!endTurn)
         {
             cout << "\n--- MENU ---" << endl;
-            cout << "1. Lanzar dado" << endl;
-            cout << "2. Ver mi dinero y propiedades" << endl;
+            cout << "1. Lanzar dado 🎲" << endl;                 // Emoji añadido
+            cout << "2. Ver mi dinero y propiedades 💰" << endl; // Emoji añadido
             cout << "3. Guardar y Salir" << endl;
             cout << "4. Salir sin guardar" << endl;
             int choice = getValidInput(1, 4);
 
             if (choice == 1)
             {
-                endTurn = true; // Termina el bucle del menú para proceder con el turno.
+                endTurn = true;
             }
             else if (choice == 2)
             {
@@ -145,12 +136,12 @@ int main()
             else if (choice == 3)
             {
                 saveGame(gameState);
-                return 0; // Termina el programa.
+                return 0;
             }
             else if (choice == 4)
             {
                 cout << "Saliendo sin guardar. ¡Adios!" << endl;
-                return 0; // Termina el programa.
+                return 0;
             }
         }
 
@@ -161,10 +152,10 @@ int main()
         }
         else
         {
-            currentPlayer = movePlayer(currentPlayer, rollDice());
-            gameState.players[gameState.currentPlayerIndex] = currentPlayer;
+            gameState.players[gameState.currentPlayerIndex] = movePlayer(currentPlayer, rollDice());
+            currentPlayer = gameState.players[gameState.currentPlayerIndex];
             char tileType = BOARD_LAYOUT[currentPlayer.position];
-            // Llama a la función correspondiente según la casilla.
+
             if (tileType == T_PROPERTY)
             {
                 gameState = handleProperty(gameState);
@@ -190,28 +181,46 @@ int main()
                 cout << "Estacionamiento libre. No pasa nada." << endl;
             }
             else if (tileType == T_START)
-            {
-                cout << "Has caido en la Salida." << endl;
+            { /* La acción ya se maneja en movePlayer */
             }
         }
 
-        // Comprueba si el juego ha terminado después del turno.
         gameState = checkGameOver(gameState);
-        // Si no ha terminado, pasa al siguiente jugador.
+
         if (!gameState.isGameOver)
         {
             gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % NUM_PLAYERS;
         }
     }
 
-    // Muestra al ganador y termina el juego.
     showWinner(gameState);
     return 0;
 }
 
 // --- Implementación de Funciones Auxiliares ---
 
-// Comprueba las condiciones de fin de juego (bancarrota o todas las propiedades compradas).
+int getValidInput(int min, int max)
+{
+    int choice;
+    do
+    {
+        cout << "Elige una opcion: ";
+        cin >> choice;
+        if (cin.fail())
+        {
+            cout << "Error: Por favor, ingresa solo numeros." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            choice = -1;
+        }
+        else if (choice < min || choice > max)
+        {
+            cout << "Error: Opcion fuera de rango. Intenta de nuevo." << endl;
+        }
+    } while (choice < min || choice > max);
+    return choice;
+}
+
 GameState checkGameOver(GameState gs)
 {
     for (int i = 0; i < NUM_PLAYERS; ++i)
@@ -220,7 +229,7 @@ GameState checkGameOver(GameState gs)
         {
             gs.players[i].isBankrupt = true;
             gs.isGameOver = true;
-            cout << "!" << gs.players[i].name << " ha entrado en bancarrota!" << endl;
+            cout << "!" << gs.players[i].name << " ha entrado en bancarrota! 📉" << endl; // Emoji añadido
             return gs;
         }
     }
@@ -240,7 +249,6 @@ GameState checkGameOver(GameState gs)
     return gs;
 }
 
-// Determina y anuncia al ganador según las reglas.
 void showWinner(GameState gs)
 {
     Player winner;
@@ -265,7 +273,7 @@ void showWinner(GameState gs)
             winner = gs.players[1];
         }
         else
-        { // En caso de empate en propiedades, gana el que tenga más dinero.
+        {
             if (gs.players[0].money > gs.players[1].money)
             {
                 winner = gs.players[0];
@@ -277,8 +285,6 @@ void showWinner(GameState gs)
         }
     }
     cout << "\n==================== FIN DEL JUEGO ====================" << endl;
-    cout << "!!! El ganador es " << winner.name << " !!!" << endl;
+    cout << "!!! El ganador es " << winner.name << " 🏆 !!!" << endl; // Emoji añadido
     cout << "=======================================================" << endl;
 }
-
-/*g++ MAIN/main.cpp src/Player.cpp src/Board.cpp src/GameIO.cpp src/GameActions.cpp -o minimopoly -Isrc*/

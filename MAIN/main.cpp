@@ -2,7 +2,6 @@
 #include <string>
 #include <limits>  // Necesario para la validación de entrada
 #include <cstdlib> // Necesario para system()
-
 #include "../src/Constants.h"
 #include "../src/Player.h"
 #include "../src/GameIO.h"
@@ -56,6 +55,7 @@ int main()
         if (choice == 1)
         { // Cargar partida
             cout << "\nCargando partida guardada..." << endl;
+             Sleep(1500);
             gameState.players[0] = loadPlayer(names.p1_name);
             gameState.players[1] = loadPlayer(names.p2_name);
         }
@@ -63,6 +63,7 @@ int main()
         { // Empezar de cero
             deleteOldSaveFiles();
             cout << "\nIniciando nueva partida..." << endl;
+             Sleep(1500);
             string name1, name2;
             cout << "Nombre del Jugador 1: ";
             cin >> name1;
@@ -76,6 +77,7 @@ int main()
     { // No hay partida guardada
         cout << "\nNo se encontraron partidas guardadas." << endl;
         cout << "Iniciando nueva partida..." << endl;
+         Sleep(2000);
         string name1, name2;
         cout << "Nombre del Jugador 1: ";
         cin >> name1;
@@ -111,10 +113,13 @@ int main()
 
             if (choice == 1)
             {
+                cout<<"Lanzando dados...\n";
+                 Sleep(1000);
                 endTurn = true;
             }
             else if (choice == 2)
             {
+                 Sleep(600);
                 printPlayerStatus(currentPlayer);
                 cout << "Propiedades:" << endl;
                 int propCount = countPlayerProperties(currentPlayer);
@@ -135,12 +140,15 @@ int main()
             }
             else if (choice == 3)
             {
+                cout<<"Guardando partidan...\n";
+                 Sleep(2000);
                 saveGame(gameState);
                 return 0;
             }
             else if (choice == 4)
             {
                 cout << "Saliendo sin guardar. ¡Adios!" << endl;
+                 Sleep(500);
                 return 0;
             }
         }

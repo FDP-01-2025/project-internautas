@@ -6,42 +6,42 @@
 using namespace std;
 
 // ===================================================================
-// DECLARACIONES DE LAS ACCIONES PRINCIPALES DEL JUEGO
+// STATEMENTS OF THE MAIN ACTIONS OF THE GAME
 // ===================================================================
 
-// La estructura 'GameState' es el contenedor central que mantiene
-// todo el estado del juego, facilitando pasarlo entre funciones.
+// The 'GameState' structure is the central container that holds
+// the entire game state, making it easier to pass between functions.
 struct GameState
 {
-    Player players[NUM_PLAYERS]; // Array con los dos jugadores.
-    int currentPlayerIndex;      // Índice del jugador actual (0 o 1).
-    bool isGameOver;             // Flag que indica si el juego ha terminado.
+    Player players[NUM_PLAYERS]; // Array with the two players.
+    int currentPlayerIndex;      // Current player index (0 or 1).
+    bool isGameOver;             // Flag that indicates if the game has ended.
 };
 
-// --- Prototipos de Funciones ---
+// --- Function Prototypes ---
 
-// Inicializa el generador de números aleatorios.
+// Initialize the random number generator.
 void initializeRandom();
 
-// Simula el lanzamiento de un dado (devuelve 1-6).
+// Simulates the roll of a die (returns 1-6).
 int rollDice();
 
-// Devuelve el índice del jugador dueño de una propiedad, o -1 si no tiene dueño.
+// Returns the index of the player who owns a property, or -1 if it has no owner.
 int getPropertyOwnerIndex(GameState gs, int propertyPosition);
 
-// Lógica para cuando un jugador cae en una propiedad.
+// Logic for when a player lands on a property.
 GameState handleProperty(GameState gs);
 
-// Lógica para cuando un jugador cae en una carta especial.
+// Logic for when a player lands on a special card.
 GameState handleSpecialCard(GameState gs);
 
-// Lógica para enviar a un jugador a la cárcel.
+// Logic to send a player to jail.
 GameState handleGoToJail(GameState gs);
 
-// Lógica del turno de un jugador que está en la cárcel.
+// Logic of a player's turn who is in jail.
 GameState handleJailTurn(GameState gs);
 
-// Lógica para cuando un jugador cae en una casilla de impuesto.
+// Logic for when a player lands on a tax square.
 GameState handleTax(GameState gs);
 
 #endif // GAME_ACTIONS_H

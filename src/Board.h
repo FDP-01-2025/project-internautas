@@ -4,13 +4,13 @@
 #include "Player.h"
 
 // ===================================================================
-// DECLARACIONES DE FUNCIONES DEL TABLERO
+// STATEMENTS OF FUNCTIONS OF THE BOARD
 // ===================================================================
 
-// Dibuja el tablero en la consola, mostrando la posición de los jugadores.
+// Draw the board in the console, showing the position of the players.
 void printBoard(Player p1, Player p2);
 
-// Calcula la nueva posición del jugador, le otorga el bono si pasa por Salida y devuelve su estado actualizado.
+// Calculates the player's new position, grants the bonus if they pass through Exit, and returns their updated status.
 Player movePlayer(Player player, int roll);
 
 #endif // BOARD_H

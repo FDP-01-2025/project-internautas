@@ -7,31 +7,31 @@
 using namespace std;
 
 // ===================================================================
-// DEFINICIÓN DE LA ESTRUCTURA DEL JUGADOR
+// DEFINITION OF THE PLAYER STRUCTURE
 // ===================================================================
 
-// La estructura 'Player' almacena toda la información de un jugador.
+// The 'Player' structure stores all the information about a player.
 struct Player
 {
-    string name;                      // Nombre del jugador.
-    int money;                        // Dinero disponible.
-    int position;                     // Posición actual en el tablero (0-19).
-    bool properties[BOARD_PERIMETER]; // Array que indica las propiedades que posee (true si la posee).
-    int getOutOfJailCards;            // Contador de cartas "Salir de la Cárcel".
-    int turnsInJail;                  // Turnos restantes que debe pasar en la cárcel.
-    bool isBankrupt;                  // Indica si el jugador ha entrado en bancarrota.
+    string name;                      // Name of the player.
+    int money;                        // Available money.
+    int position;                     // Current position on the board (0-19).
+    bool properties[BOARD_PERIMETER]; // Array that indicates the properties it has (true if it has it).
+    int getOutOfJailCards;            // Card counter 'Get Out of Jail'.
+    int turnsInJail;                  // Remaining shifts that he must spend in jail.
+    bool isBankrupt;                  // Indicate if the player has gone bankrupt.
 };
 
-// --- Prototipos de Funciones (declaraciones) ---
-// La implementación de estas funciones está en Player.cpp.
+// --- Function Prototypes (declarations) ---
+// The implementation of these functions is in Player.cpp.
 
-// Crea una nueva instancia de Player con valores iniciales.
+// Create a new instance of Player with initial values.
 Player createNewPlayer(string name);
 
-// Muestra en consola el estado actual de un jugador.
+// Displays the current state of a player in the console.
 void printPlayerStatus(Player player);
 
-// Devuelve el número total de propiedades que posee un jugador.
+// Returns the total number of properties owned by a player.
 int countPlayerProperties(Player player);
 
 #endif // PLAYER_H

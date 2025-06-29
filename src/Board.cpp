@@ -5,24 +5,24 @@
 using namespace std;
 
 // ===================================================================
-// IMPLEMENTACIÓN DE LAS FUNCIONES DEL TABLERO
+// IMPLEMENTATION OF BOARD FUNCTIONS
 // ===================================================================
 
-// --- Estructura Auxiliar ---
-// Se crea esta estructura para poder devolver dos valores (fila y columna)
-// desde la función getCoords sin usar punteros ni referencias.
+// --- Auxiliary Structure ---
+// This structure is created to return two values (row and column) 
+// from the getCoords function without using pointers or references.
 struct Coordinates
 {
     int row;
     int col;
 };
 
-// --- Función Auxiliar ---
-// Convierte la posición lineal del jugador (0-19) a coordenadas de la rejilla.
-// Devuelve una estructura 'Coordinates' por valor.
+// --- Auxiliary Structure ---
+// Convert the player's linear position (0-19) to grid coordinates.
+// Returns a 'Coordinates' structure by value.
 Coordinates getCoords(int pos)
 {
-    Coordinates coords; // Se crea un objeto para guardar las coordenadas.
+    Coordinates coords; // An object is created to store the coordinates.
     if (pos >= 0 && pos <= 5)
     {
         coords.row = 0;
@@ -43,25 +43,25 @@ Coordinates getCoords(int pos)
         coords.row = 19 - pos;
         coords.col = 0;
     }
-    return coords; // Se devuelve la estructura completa.
+    return coords; // The complete structure is returned.
 }
 
-// Implementación de la función mejorada para imprimir el tablero.
+// Implementation of the improved function to print the board.
 void printBoard(Player p1, Player p2)
 {
-    // 1. Se crea una rejilla de 6x6 para representar visualmente el tablero.
+    // 1. A 6x6 grid is created to visually represent the board.
     string grid[6][6];
     for (int i = 0; i < 6; ++i)
     {
         for (int j = 0; j < 6; ++j)
         {
-            grid[i][j] = "     "; // Se llena el interior con espacios.
+            grid[i][j] = "     "; // The interior is filled with spaces.
         }
     }
 
-    // 2. Se mapea el array de SÍMBOLOS a las coordenadas de la rejilla.
-    // Nota: Esta es la implementación simple que usa los emojis directamente.
-    // No intenta corregir la alineación, por lo que puede verse "chueco" en la consola.
+    // 2. The array of SYMBOLS is mapped to the grid coordinates.
+    // Note: This is the simple implementation that uses emojis directly.
+    // It does not try to correct the alignment, so it may appear "crooked" in the console.
     for (int i = 0; i <= 5; ++i)
         grid[0][i] = "[ " + BOARD_SYMBOLS[i] + " ]";
     for (int i = 0; i < 4; ++i)
@@ -71,17 +71,17 @@ void printBoard(Player p1, Player p2)
     for (int i = 0; i < 4; ++i)
         grid[4 - i][0] = "[ " + BOARD_SYMBOLS[16 + i] + " ]";
 
-    // 3. Se obtiene la posición (fila, columna) de cada jugador usando la nueva función.
+    // 3. The position (row, column) of each player is obtained using the new function.
     Coordinates p1_coords = getCoords(p1.position);
     Coordinates p2_coords = getCoords(p2.position);
 
-    // 4. Se colocan los indicadores de los jugadores ('1' y '2') en la rejilla.
-    // Se accede a los valores a través de la estructura (ej: p1_coords.row).
+    // 4. The players' indicators ('1' and '2') are placed on the grid.
+    // Values are accessed through the structure (ex: p1_coords.row).
     grid[p1_coords.row][p1_coords.col][1] = '1';
     grid[p2_coords.row][p2_coords.col][3] = '2';
 
-    // 5. Se imprime la rejilla final y la leyenda.
-    cout << "\n================== TABLERO DE JUEGO ==================" << endl;
+    // 5. The final grid and the legend are printed.
+    cout << "\n================== GAME BOARD ==================" << endl;
     for (int i = 0; i < 6; ++i)
     {
         string line = "";
@@ -90,36 +90,36 @@ void printBoard(Player p1, Player p2)
             line += grid[i][j];
         }
         cout << line << endl
-             << endl; // Doble espacio vertical para mejor legibilidad.
+             << endl; // Double vertical space for better readability.
     }
     cout << "======================================================" << endl;
-    cout << "Leyenda:  1-" << p1.name << "   2-" << p2.name << endl;
+    cout << "Legend:  1-" << p1.name << "   2-" << p2.name << endl;
 }
 
-// La función movePlayer, ahora actualizada para ser consistente.
+// The movePlayer function, now updated to be consistent.
 Player movePlayer(Player player, int roll)
 {
     int oldPosition = player.position;
-    // El operador módulo (%) asegura que la posición se mantenga dentro del rango 0-19.
+    // The modulo operator (%) ensures that the position stays within the range of 0-19.
     player.position = (oldPosition + roll) % BOARD_PERIMETER;
 
-    // Si la nueva posición es menor que la anterior, significa que ha completado una vuelta.
+    // If the new position is less than the previous one, it means that you have completed a lap.
     if (player.position < oldPosition)
     {
-        cout << player.name << " ha pasado por la Salida y cobra $" << GO_BONUS << "!" << endl;
+        cout << player.name << " has gone through the Exit and charges $" << GO_BONUS << "!" << endl;
         player.money += GO_BONUS;
     }
 
-    // --- CAMBIO IMPORTANTE ---
-    // Ahora el mensaje de movimiento usa BOARD_SYMBOLS para mostrar el emoji,
-    // en lugar de la letra de BOARD_LAYOUT, para que sea consistente con el tablero.
-    cout << player.name << " ha sacado un " << roll << " y se mueve a la casilla " << player.position
+    // --- IMPORTANT CHANGE ---
+    // Now the movement message uses BOARD_SYMBOLS to display the emoji,
+    // instead of the BOARD_LAYOUT letter, to be consistent with the board.
+    cout << player.name << " has landed a " << roll << " and moves to square " << player.position
          << " " << BOARD_SYMBOLS[player.position] << endl;
 
-    // Se muestra el nombre completo de la propiedad.
+    // The full name of the property is displayed.
     if (PROPERTY_NAMES[player.position] != "")
     {
-        cout << "Ha caido en: " << PROPERTY_NAMES[player.position] << endl;
+        cout << "Has landed in: " << PROPERTY_NAMES[player.position] << endl;
     }
 
     return player;

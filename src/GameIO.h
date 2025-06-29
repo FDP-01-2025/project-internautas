@@ -2,34 +2,34 @@
 #define GAMEIO_H
 
 #include "Player.h"
-#include "GameActions.h" // Se incluye para que conozca la estructura GameState.
+#include "GameActions.h" // It is included so you can know the GameState structure.
 
 // ===================================================================
-// DECLARACIONES DE FUNCIONES DE ENTRADA/SALIDA (GUARDADO/CARGA)
+// INPUT/OUTPUT FUNCTION DECLARATIONS (SAVE/LOAD)
 // ===================================================================
 
-// Estructura auxiliar para devolver los dos nombres de la partida guardada.
+// Auxiliary structure to return the two names of the saved game.
 struct SavedPlayerNames
 {
     string p1_name;
     string p2_name;
 };
 
-// --- Prototipos de Funciones ---
+// --- Function Prototypes ---
 
-// Devuelve 'true' si existe el archivo de control "savegame.txt".
+// Returns 'true' if the control file exists "savegame.txt".
 bool doesSaveExist();
 
-// Lee y devuelve los nombres de los jugadores desde "savegame.txt".
+// Read and return the names of the players from "savegame.txt".
 SavedPlayerNames getSavedPlayerNames();
 
-// Carga los datos de un único jugador desde su archivo .txt.
+// Load the data of a single player from their file .txt.
 Player loadPlayer(string name);
 
-// Guarda el estado completo de la partida actual.
+// Save the complete state of the current game.
 void saveGame(GameState gs);
 
-// Elimina todos los archivos de la partida guardada anterior.
+// Delete all files from the previous saved game.
 void deleteOldSaveFiles();
 
 #endif // GAMEIO_H

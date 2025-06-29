@@ -1,30 +1,30 @@
 #include "GameActions.h"
 #include "Constants.h"
 #include <iostream>
-#include <cstdlib> // Necesario para rand() y srand()
-#include <ctime>   // Necesario para time()
-#include <cctype>  // Necesario para tolower()
-#include <limits>  // Necesario para numeric_limits
+#include <cstdlib> // Necessary for rand() y srand()
+#include <ctime>   // Necessary for time()
+#include <cctype>  // Necessary for tolower()
+#include <limits>  // Necessary for numeric_limits
 
 using namespace std;
 
 // ===================================================================
-// IMPLEMENTACIÓN DE LAS ACCIONES PRINCIPALES DEL JUEGO
+// IMPLEMENTATION OF THE MAIN ACTIONS OF THE GAME
 // ===================================================================
 
-// Inicializa el generador de números aleatorios usando la hora actual como semilla.
+// Initialize the random number generator using the current time as the seed.
 void initializeRandom()
 {
     srand(time(nullptr));
 }
 
-// Devuelve un número aleatorio entre 1 y 6.
+// Returns a random number between 1 and 6.
 int rollDice()
 {
     return (rand() % 6) + 1;
 }
 
-// Busca el dueño de una propiedad.
+// Looks for the owner of a property.
 int getPropertyOwnerIndex(GameState gs, int propertyPosition)
 {
     for (int i = 0; i < NUM_PLAYERS; ++i)
@@ -37,7 +37,7 @@ int getPropertyOwnerIndex(GameState gs, int propertyPosition)
     return -1;
 }
 
-// Gestiona la lógica cuando un jugador cae en una propiedad.
+// Manages the logic when a player lands on a property.
 GameState handleProperty(GameState gs)
 {
     Player currentPlayer = gs.players[gs.currentPlayerIndex];
@@ -45,113 +45,113 @@ GameState handleProperty(GameState gs)
     int ownerIndex = getPropertyOwnerIndex(gs, propertyPos);
 
     if (ownerIndex == -1)
-    { // Si no tiene dueño
-        cout << "La propiedad '" << PROPERTY_NAMES[propertyPos] << "' esta disponible." << endl;
-        cout << "Cuesta $" << PROPERTY_PRICES[propertyPos] << ". Tu dinero: $" << currentPlayer.money << endl;
+    { // If it has no owner
+        cout << "The property '" << PROPERTY_NAMES[propertyPos] << "' is available." << endl;
+        cout << "Costs $" << PROPERTY_PRICES[propertyPos] << ". Your current cash: $" << currentPlayer.money << endl;
         if (currentPlayer.money >= PROPERTY_PRICES[propertyPos])
         {
             char choice;
-            // Bucle de validación de entrada.
+            // Input validation loop.
             do
             {
-                cout << "Deseas comprarla? (s/n): ";
+                cout << "Would you like to buy it? (y/n): ";
                 cin >> choice;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 choice = tolower(choice);
-                if (choice != 's' && choice != 'n')
+                if (choice != 'y' && choice != 'n')
                 {
-                    cout << "Error: Opcion no valida." << endl;
+                    cout << "Error: Invalid option." << endl;
                 }
-            } while (choice != 's' && choice != 'n');
+            } while (choice != 'y' && choice != 'n');
 
-            if (choice == 's')
-            { // Si compra
+            if (choice == 'y')
+            { // If bought
                 currentPlayer.money -= PROPERTY_PRICES[propertyPos];
                 currentPlayer.properties[propertyPos] = true;
-                cout << currentPlayer.name << " ha comprado '" << PROPERTY_NAMES[propertyPos] << "'." << endl;
+                cout << currentPlayer.name << " has bought '" << PROPERTY_NAMES[propertyPos] << "'." << endl;
             }
         }
         else
         {
-            cout << "No tienes suficiente dinero para comprar esta propiedad." << endl;
+            cout << "You don't have enough money to buy the property." << endl;
         }
     }
     else if (ownerIndex != gs.currentPlayerIndex)
-    { // Si es de otro jugador
+    { // If it's from another player
         Player owner = gs.players[ownerIndex];
         int rent = PROPERTY_RENTS[propertyPos];
-        cout << "Esta propiedad pertenece a " << owner.name << ". Debes pagar una renta de $" << rent << "." << endl;
+        cout << "This property belongs to " << owner.name << ". You must pay a rent of $" << rent << "." << endl;
         currentPlayer.money -= rent;
         owner.money += rent;
         gs.players[ownerIndex] = owner;
     }
     else
-    { // Si es del propio jugador
-        cout << "Has caido en tu propia propiedad. !Que suerte!" << endl;
+    { // If it is from the player himself/herself
+        cout << "You have landed on your own property. !How lucky!" << endl;
     }
     gs.players[gs.currentPlayerIndex] = currentPlayer;
     return gs;
 }
 
-// Gestiona la lógica de las cartas especiales.
+// Manages the logic of the special cards.
 GameState handleSpecialCard(GameState gs)
 {
     Player currentPlayer = gs.players[gs.currentPlayerIndex];
-    int effect = rand() % 3; // Efecto aleatorio
-    cout << "Has caido en una casilla de Carta Especial!" << endl;
+    int effect = rand() % 3; // Random effect
+    cout << "You have fallen into a Special Card square.!" << endl;
     if (effect == 0)
     {
-        cout << "!Has encontrado un tesoro! Ganas $100." << endl;
+        cout << "!You have found a treasure! You win $100." << endl;
         currentPlayer.money += 100;
     }
     else if (effect == 1)
     {
-        cout << "Paga una multa por exceso de velocidad. Pierdes $50." << endl;
+        cout << "Pay a fine for speeding. You lose $50." << endl;
         currentPlayer.money -= 50;
     }
     else
     {
-        cout << "!Has conseguido una carta para 'Salir de la Carcel'!" << endl;
+        cout << "!You have obtained a card to 'Get Out of Jail.'!" << endl;
         currentPlayer.getOutOfJailCards++;
     }
     gs.players[gs.currentPlayerIndex] = currentPlayer;
     return gs;
 }
 
-// Envía al jugador a la cárcel.
+// Sends player to jail.
 GameState handleGoToJail(GameState gs)
 {
     Player currentPlayer = gs.players[gs.currentPlayerIndex];
-    cout << "!Directo a la carcel! No pasas por la salida y no cobras." << endl;
+    cout << "!Straight to jail! You do not go through the exit and you do not charge." << endl;
     currentPlayer.position = JAIL_POSITION;
     currentPlayer.turnsInJail = JAIL_TURNS_TO_SKIP + 1;
     gs.players[gs.currentPlayerIndex] = currentPlayer;
     return gs;
 }
 
-// Gestiona el turno de un jugador que está en la cárcel.
+// Manages the turn of a player who is in jail.
 GameState handleJailTurn(GameState gs)
 {
     Player currentPlayer = gs.players[gs.currentPlayerIndex];
-    cout << currentPlayer.name << " esta en la carcel." << endl;
+    cout << currentPlayer.name << " is in jail." << endl;
     if (currentPlayer.getOutOfJailCards > 0)
     {
         char choice;
         do
         {
-            cout << "Tienes una carta para salir de la carcel. Quieres usarla? (s/n): ";
+            cout << "You have a card to get out of jail. Do you want to use it? (y/n): ";
             cin >> choice;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             choice = tolower(choice);
-            if (choice != 's' && choice != 'n')
-                cout << "Error: Opcion no valida." << endl;
-        } while (choice != 's' && choice != 'n');
+            if (choice != 'y' && choice != 'n')
+                cout << "Error: Invalid option." << endl;
+        } while (choice != 'y' && choice != 'n');
 
-        if (choice == 's')
+        if (choice == 'y')
         {
             currentPlayer.getOutOfJailCards--;
             currentPlayer.turnsInJail = 0;
-            cout << "Has usado la carta. !Eres libre!" << endl;
+            cout << "You have used the card. You are free!" << endl;
         }
     }
     if (currentPlayer.turnsInJail > 0)
@@ -159,22 +159,22 @@ GameState handleJailTurn(GameState gs)
         currentPlayer.turnsInJail--;
         if (currentPlayer.turnsInJail > 0)
         {
-            cout << "Te quedas en la carcel. Te quedan " << currentPlayer.turnsInJail << " turnos por esperar." << endl;
+            cout << "You stay in jail. You have left " << currentPlayer.turnsInJail << " turns to wait." << endl;
         }
         else
         {
-            cout << "Has cumplido tu condena. En el proximo turno podras moverte." << endl;
+            cout << "You have served your sentence. In the next turn, you will be able to move." << endl;
         }
     }
     gs.players[gs.currentPlayerIndex] = currentPlayer;
     return gs;
 }
 
-// Gestiona el pago de impuestos.
+// Manages the payment of taxes.
 GameState handleTax(GameState gs)
 {
     Player currentPlayer = gs.players[gs.currentPlayerIndex];
-    cout << "Impuesto sobre la renta. Debes pagar $" << TAX_AMOUNT << endl;
+    cout << "Income tax. You must pay $" << TAX_AMOUNT << endl;
     currentPlayer.money -= TAX_AMOUNT;
     gs.players[gs.currentPlayerIndex] = currentPlayer;
     return gs;

@@ -1,34 +1,34 @@
 #include <iostream>
 #include <string>
-#include <limits>  // Necesario para la validación de entrada
-#include <cstdlib> // Necesario para system()
+#include <limits>  // Necessary for input validation
+#include <cstdlib> // Necessary for system()
 #include "../src/Constants.h"
 #include "../src/Player.h"
 #include "../src/GameIO.h"
 #include "../src/Board.h"
 #include "../src/GameActions.h"
 
-// Le dice a windows.h que no incluya APIs innecesarias que causan el conflicto.
+// It tells windows.h not to include unnecessary APIs that cause the conflict.
 #define WIN32_LEAN_AND_MEAN
 
-// Se incluye solo en Windows para las funciones de consola
+// It is included only in Windows for console functions.
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
 using namespace std;
 
-// --- Prototipos de funciones auxiliares del main ---
+// --- Prototypes of auxiliary functions of the main ---
 GameState checkGameOver(GameState gs);
 void showWinner(GameState gs);
 int getValidInput(int min, int max);
 
-// --- Función Principal ---
+// --- Main Function ---
 int main()
 {
-// --- Configuración Inicial de la Consola ---
+// --- Initial Console Setup ---
 #ifdef _WIN32
-    // Prepara la consola para mostrar símbolos Unicode (UTF-8)
+    // Prepare the console to display Unicode symbols (UTF-8)
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
@@ -37,83 +37,83 @@ int main()
     GameState gameState;
 
     cout << "========================================" << endl;
-    cout << "      BIENVENIDO A MINIMOPOLY 🏁" << endl; // Emoji añadido
+    cout << "      WELCOME TO MINIMONOPOLY 🏁" << endl; // Emoji added
     cout << "========================================" << endl;
 
-    // Lógica de inicio: Comprueba si hay una partida guardada.
+    // Startup logic: Check if there is a saved game.
     if (doesSaveExist())
     {
         SavedPlayerNames names = getSavedPlayerNames();
-        cout << "\nSe ha encontrado una partida guardada:" << endl;
+        cout << "\nA saved game has been found:" << endl;
         cout << " -> " << names.p1_name << " vs " << names.p2_name << endl;
 
-        cout << "\nQue deseas hacer?" << endl;
-        cout << "1. Cargar partida 💾" << endl;                                     // Emoji añadido
-        cout << "2. Empezar una nueva partida (se borrara la anterior) 🚮" << endl; // Emoji añadido
+        cout << "\nWhat would you like to do?" << endl;
+        cout << "1. Load game 💾" << endl;                                     // Emoji added
+        cout << "2. Start a new game (the previous one will be deleted) 🚮" << endl; // Emoji added
         int choice = getValidInput(1, 2);
 
         if (choice == 1)
-        { // Cargar partida
-            cout << "\nCargando partida guardada..." << endl;
+        { // Load game
+            cout << "\nLoading saved game..." << endl;
              Sleep(1500);
             gameState.players[0] = loadPlayer(names.p1_name);
             gameState.players[1] = loadPlayer(names.p2_name);
         }
         else
-        { // Empezar de cero
+        { // Start from zero
             deleteOldSaveFiles();
-            cout << "\nIniciando nueva partida..." << endl;
+            cout << "\nStarting new game..." << endl;
              Sleep(1500);
             string name1, name2;
-            cout << "Nombre del Jugador 1: ";
+            cout << "Name of Player 1: ";
             cin >> name1;
-            cout << "Nombre del Jugador 2: ";
+            cout << "Name of Player 2: ";
             cin >> name2;
             gameState.players[0] = createNewPlayer(name1);
             gameState.players[1] = createNewPlayer(name2);
         }
     }
     else
-    { // No hay partida guardada
-        cout << "\nNo se encontraron partidas guardadas." << endl;
-        cout << "Iniciando nueva partida..." << endl;
+    { // There is no saved game
+        cout << "\nNo saved game was found." << endl;
+        cout << "Starting a new game..." << endl;
          Sleep(2000);
         string name1, name2;
-        cout << "Nombre del Jugador 1: ";
+        cout << "Name of Player 1: ";
         cin >> name1;
-        cout << "Nombre del Jugador 2: ";
+        cout << "Name of Player 2: ";
         cin >> name2;
         gameState.players[0] = createNewPlayer(name1);
         gameState.players[1] = createNewPlayer(name2);
     }
 
-    // Inicialización del estado del juego
+    // Initialization of the game state
     gameState.currentPlayerIndex = 0;
     gameState.isGameOver = false;
 
-    // --- Bucle Principal del Juego ---
+    // --- Main Loop of the Game ---
     while (!gameState.isGameOver)
     {
         Player currentPlayer = gameState.players[gameState.currentPlayerIndex];
         Player otherPlayer = gameState.players[(gameState.currentPlayerIndex + 1) % NUM_PLAYERS];
 
-        cout << "\n==================== TURNO DE " << currentPlayer.name << " ====================" << endl;
+        cout << "\n==================== " << currentPlayer.name << "'s TURN ====================" << endl;
         printBoard(currentPlayer, otherPlayer);
 
-        // Menú de acciones del turno
+        // Shift action menu
         bool endTurn = false;
         while (!endTurn)
         {
             cout << "\n--- MENU ---" << endl;
-            cout << "1. Lanzar dado 🎲" << endl;                 // Emoji añadido
-            cout << "2. Ver mi dinero y propiedades 💰" << endl; // Emoji añadido
-            cout << "3. Guardar y Salir" << endl;
-            cout << "4. Salir sin guardar" << endl;
+            cout << "1. Roll the dice 🎲" << endl;                 // Emoji added
+            cout << "2. View my money and properties 💰" << endl; // Emoji added
+            cout << "3. Save and exit" << endl;
+            cout << "4. Exit without saving" << endl;
             int choice = getValidInput(1, 4);
 
             if (choice == 1)
             {
-                cout<<"Lanzando dados...\n";
+                cout<<"Rolling dices...\n";
                  Sleep(1000);
                 endTurn = true;
             }
@@ -121,7 +121,7 @@ int main()
             {
                  Sleep(600);
                 printPlayerStatus(currentPlayer);
-                cout << "Propiedades:" << endl;
+                cout << "Properties:" << endl;
                 int propCount = countPlayerProperties(currentPlayer);
                 if (propCount > 0)
                 {
@@ -135,25 +135,25 @@ int main()
                 }
                 else
                 {
-                    cout << " - (Ninguna)" << endl;
+                    cout << " - (None)" << endl;
                 }
             }
             else if (choice == 3)
             {
-                cout<<"Guardando partidan...\n";
+                cout<<"Saving game...\n";
                  Sleep(2000);
                 saveGame(gameState);
                 return 0;
             }
             else if (choice == 4)
             {
-                cout << "Saliendo sin guardar. ¡Adios!" << endl;
+                cout << "Exiting without saving. ¡Goodbye!" << endl;
                  Sleep(500);
                 return 0;
             }
         }
 
-        // Lógica de acción del turno
+        // Action logic of the turn
         if (currentPlayer.turnsInJail > 0)
         {
             gameState = handleJailTurn(gameState);
@@ -182,14 +182,14 @@ int main()
             }
             else if (tileType == T_JAIL)
             {
-                cout << "Estas de visita en la carcel." << endl;
+                cout << "You are visiting in jail." << endl;
             }
             else if (tileType == T_PARKING)
             {
-                cout << "Estacionamiento libre. No pasa nada." << endl;
+                cout << "Free station. Nothing happens." << endl;
             }
             else if (tileType == T_START)
-            { /* La acción ya se maneja en movePlayer */
+            { /* The action is already being handled in movePlayer. */
             }
         }
 
@@ -205,25 +205,25 @@ int main()
     return 0;
 }
 
-// --- Implementación de Funciones Auxiliares ---
+// --- Implementation of Auxiliary Functions ---
 
 int getValidInput(int min, int max)
 {
     int choice;
     do
     {
-        cout << "Elige una opcion: ";
+        cout << "Choose an option: ";
         cin >> choice;
         if (cin.fail())
         {
-            cout << "Error: Por favor, ingresa solo numeros." << endl;
+            cout << "Error: Please insert only numbers." << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             choice = -1;
         }
         else if (choice < min || choice > max)
         {
-            cout << "Error: Opcion fuera de rango. Intenta de nuevo." << endl;
+            cout << "Error: Option out of range. Try again." << endl;
         }
     } while (choice < min || choice > max);
     return choice;
@@ -237,7 +237,7 @@ GameState checkGameOver(GameState gs)
         {
             gs.players[i].isBankrupt = true;
             gs.isGameOver = true;
-            cout << "!" << gs.players[i].name << " ha entrado en bancarrota! 📉" << endl; // Emoji añadido
+            cout << "!" << gs.players[i].name << " has gone bankrupt! 📉" << endl; // Emoji added
             return gs;
         }
     }
@@ -252,7 +252,7 @@ GameState checkGameOver(GameState gs)
     if (propertiesOwned >= MAX_PROPERTIES)
     {
         gs.isGameOver = true;
-        cout << "!Todas las propiedades han sido compradas!" << endl;
+        cout << "!All the properties have been bought!" << endl;
     }
     return gs;
 }
@@ -292,7 +292,7 @@ void showWinner(GameState gs)
             }
         }
     }
-    cout << "\n==================== FIN DEL JUEGO ====================" << endl;
-    cout << "!!! El ganador es " << winner.name << " 🏆 !!!" << endl; // Emoji añadido
+    cout << "\n==================== GAME OVER ====================" << endl;
+    cout << "!!! The winner is " << winner.name << " 🏆 !!!" << endl; // Emoji added
     cout << "=======================================================" << endl;
 }

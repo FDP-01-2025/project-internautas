@@ -1,15 +1,15 @@
 #include "GameIO.h"
 #include <fstream>
 #include <iostream>
-#include <cstdio> // Necesario para la función remove() que borra archivos.
+#include <cstdio> // Necessary for the remove() function that deletes files.
 
 using namespace std;
 
 // ===================================================================
-// IMPLEMENTACIÓN DE FUNCIONES DE ENTRADA/SALIDA (GUARDADO/CARGA)
+// IMPLEMENTATION OF INPUT/OUTPUT FUNCTIONS (SAVE/LOAD)
 // ===================================================================
 
-// Función auxiliar interna para guardar los datos de un solo jugador en su archivo .txt.
+// Internal auxiliary function to save the data of a single player in their .txt file.
 void savePlayer(Player player)
 {
     ofstream file(player.name + ".txt");
@@ -19,7 +19,7 @@ void savePlayer(Player player)
         file << player.money << endl;
         file << player.position << endl;
         file << player.getOutOfJailCards << endl;
-        // Guarda los índices de las propiedades que posee.
+        // Keep the indices of the properties you own.
         for (int i = 0; i < BOARD_PERIMETER; ++i)
         {
             if (player.properties[i])
@@ -32,14 +32,14 @@ void savePlayer(Player player)
     }
 }
 
-// Revisa si existe un archivo de guardado maestro.
+// Check if there is a master save file.
 bool doesSaveExist()
 {
     ifstream file("savegame.txt");
-    return file.is_open(); // Devuelve true si el archivo se pudo abrir (existe).
+    return file.is_open(); // Returns true if the file could be opened (exists).
 }
 
-// Obtiene los nombres de los jugadores del archivo de guardado maestro.
+// Get the names of the players from the master save file.
 SavedPlayerNames getSavedPlayerNames()
 {
     SavedPlayerNames names;
@@ -52,7 +52,7 @@ SavedPlayerNames getSavedPlayerNames()
     return names;
 }
 
-// Carga los datos de un jugador. Si su archivo no existe, crea un jugador nuevo.
+// Load the data of a player. If their file does not exist, create a new player.
 Player loadPlayer(string name)
 {
     ifstream file(name + ".txt");
@@ -64,11 +64,11 @@ Player loadPlayer(string name)
         file >> loadedPlayer.position;
         file >> loadedPlayer.getOutOfJailCards;
 
-        // Limpia las propiedades antes de cargar las guardadas.
+        // Clean the properties before loading the saved ones.
         for (int i = 0; i < BOARD_PERIMETER; ++i)
             loadedPlayer.properties[i] = false;
 
-        // Lee los índices de las propiedades y las asigna.
+        // Read the property indices and assign them.
         int propIndex;
         while (file >> propIndex)
         {
@@ -80,21 +80,21 @@ Player loadPlayer(string name)
         loadedPlayer.turnsInJail = 0;
         loadedPlayer.isBankrupt = false;
         file.close();
-        cout << "Datos de " << loadedPlayer.name << " cargados." << endl;
+        cout << "Data from " << loadedPlayer.name << " loaded." << endl;
         return loadedPlayer;
     }
-    cout << "No se encontraron datos para " << name << ". Creando nuevo jugador." << endl;
+    cout << "No data found for " << name << ". Creating new player." << endl;
     return createNewPlayer(name);
 }
 
-// Guarda la partida completa.
+// Save the complete game.
 void saveGame(GameState gs)
 {
-    cout << "Guardando partida..." << endl;
-    // 1. Guarda los datos de cada jugador en su respectivo archivo.
+    cout << "Saving game..." << endl;
+    // 1. Save the data of each player in their respective file.
     savePlayer(gs.players[0]);
     savePlayer(gs.players[1]);
-    // 2. Crea/sobrescribe el archivo de control con los nombres de la sesión.
+    // 2. Create/overwrite the control file with the session names.
     ofstream file("savegame.txt");
     if (file.is_open())
     {
@@ -102,20 +102,20 @@ void saveGame(GameState gs)
         file << gs.players[1].name << endl;
         file.close();
     }
-    cout << "Partida guardada con exito." << endl;
+    cout << "Game saved successfully." << endl;
 }
 
-// Elimina los archivos de la partida anterior.
+// Delete the files from the previous game.
 void deleteOldSaveFiles()
 {
     if (doesSaveExist())
     {
-        cout << "Eliminando datos de la partida anterior..." << endl;
+        cout << "Removing data from the previous game..." << endl;
         SavedPlayerNames names = getSavedPlayerNames();
-        // Borra los archivos de cada jugador.
+        // Delete the files of each player.
         remove((names.p1_name + ".txt").c_str());
         remove((names.p2_name + ".txt").c_str());
-        // Borra el archivo de control.
+        // Delete the control file.
         remove("savegame.txt");
     }
 }

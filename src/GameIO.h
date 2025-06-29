@@ -2,34 +2,36 @@
 #define GAMEIO_H
 
 #include "Player.h"
-#include "GameActions.h" // It is included so you can know the GameState structure.
+#include "GameActions.h" // Included to know the GameState struct definition.
 
 // ===================================================================
-// INPUT/OUTPUT FUNCTION DECLARATIONS (SAVE/LOAD)
+// HEADER FILE FOR GAME INPUT/OUTPUT FUNCTIONS (SAVE/LOAD)
+// This file declares the public interface for all file operations.
 // ===================================================================
 
-// Auxiliary structure to return the two names of the saved game.
+// A helper struct to return the two player names from a saved game file.
 struct SavedPlayerNames
 {
     string p1_name;
     string p2_name;
 };
 
+
 // --- Function Prototypes ---
 
-// Returns 'true' if the control file exists "savegame.txt".
+// Returns 'true' if the master save file ("savegame.txt") exists.
 bool doesSaveExist();
 
-// Read and return the names of the players from "savegame.txt".
+// Reads and returns the player names from "savegame.txt".
 SavedPlayerNames getSavedPlayerNames();
 
-// Load the data of a single player from their file .txt.
+// Loads a single player's data from their corresponding .txt file.
 Player loadPlayer(string name);
 
-// Save the complete state of the current game.
+// Saves the complete state of the current game.
 void saveGame(GameState gs);
 
-// Delete all files from the previous saved game.
+// Deletes all files from the previous saved game.
 void deleteOldSaveFiles();
 
 #endif // GAMEIO_H

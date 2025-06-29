@@ -2,46 +2,43 @@
 #define GAME_ACTIONS_H
 
 #include "Player.h"
-
 using namespace std;
 
-// ===================================================================
-// STATEMENTS OF THE MAIN ACTIONS OF THE GAME
-// ===================================================================
-
-// The 'GameState' structure is the central container that holds
-// the entire game state, making it easier to pass between functions.
-struct GameState
-{
-    Player players[NUM_PLAYERS]; // Array with the two players.
-    int currentPlayerIndex;      // Current player index (0 or 1).
-    bool isGameOver;             // Flag that indicates if the game has ended.
+// This struct holds the entire state of the game, making it easy
+// to pass between functions.
+struct GameState {
+    Player players[NUM_PLAYERS];
+    int currentPlayerIndex;
+    bool isGameOver;
 };
 
 // --- Function Prototypes ---
 
-// Initialize the random number generator.
+// Initializes the random number generator.
 void initializeRandom();
 
-// Simulates the roll of a die (returns 1-6).
+// Simulates a 6-sided dice roll.
 int rollDice();
 
-// Returns the index of the player who owns a property, or -1 if it has no owner.
+// Finds the owner of a property. Returns player index (0 or 1), or -1 if unowned.
 int getPropertyOwnerIndex(GameState gs, int propertyPosition);
 
-// Logic for when a player lands on a property.
+// Checks if a player owns the complete set for a given property.
+bool ownsFullSet(Player owner, int propertyPosition);
+
+// Handles the logic when a player lands on a property tile.
 GameState handleProperty(GameState gs);
 
-// Logic for when a player lands on a special card.
+// Handles the logic for drawing a special card.
 GameState handleSpecialCard(GameState gs);
 
-// Logic to send a player to jail.
+// Handles the logic for paying a tax.
+GameState handleTax(GameState gs);
+
+// Handles the logic for the "Go to Jail" tile.
 GameState handleGoToJail(GameState gs);
 
-// Logic of a player's turn who is in jail.
+// Handles a player's turn while they are in jail.
 GameState handleJailTurn(GameState gs);
-
-// Logic for when a player lands on a tax square.
-GameState handleTax(GameState gs);
 
 #endif // GAME_ACTIONS_H

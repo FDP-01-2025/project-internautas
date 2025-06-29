@@ -2,75 +2,87 @@
 #define CONSTANTS_H
 
 #include <string>
-
 using namespace std;
 
 // ===================================================================
 // GLOBAL CONSTANTS FILE
-// Here all the fixed values of the game are defined for easy access and modification.
+// All fixed game values are defined here for easy access and modification.
+// This file acts as the game's main configuration panel.
 // ===================================================================
+
 
 // --- 1. General Game Settings ---
-// Here the economic rules and flow of the game are adjusted.
+// This section adjusts the game's economy and flow.
 // ===================================================================
-const int NUM_PLAYERS = 2;          // Number of players.
-const int BOARD_PERIMETER = 20;     // Don't change: EThe board is designed for 20 squares.
-const int MAX_PROPERTIES = 11;      // Don't change: The total number of properties in the board.
-const int STARTING_MONEY = 1000;    // Starter money for each player.
-const int GO_BONUS = 150;           // Bonus for passing the exit.
-const int JAIL_POSITION = 5;        // Position in the array (index 5) of the Jail cell.
-const int GO_TO_JAIL_POSITION = 15; // Position of the 'Go to Jail' square.
-const int BANKRUPTCY_LIMIT = -200;  // Debt limit to declare bankruptcy.
-const int TAX_AMOUNT = 150;         // Cost of the tax.
-const int JAIL_TURNS_TO_SKIP = 1;   // Turns that a player must wait in jail.
+const int NUM_PLAYERS = 2;          // Number of players in the game.
+const int BOARD_PERIMETER = 20;     // Do not change: The board logic is designed for 20 tiles.
+const int MAX_PROPERTIES = 11;      // Do not change: The total number of purchasable properties.
+const int STARTING_MONEY = 500;     // The amount of money each player starts with.
+const int GO_BONUS = 150;           // Bonus received when passing the GO tile.
+const int JAIL_POSITION = 5;        // The array index (5) for the Jail tile.
+const int GO_TO_JAIL_POSITION = 15; // The array index for the "Go to Jail" tile.
+const int BANKRUPTCY_LIMIT = -200;  // The negative money limit to declare bankruptcy.
+const int TAX_AMOUNT = 150;         // The cost of the Tax tile.
+const int JAIL_TURNS_TO_SKIP = 1;   // Number of turns a player must wait in jail.
 
-// --- 2. Logical and Visual Configuration of the Dashboard ---
-// Defines what is in each box.
+
+// --- 2. Board Logic and Visuals Configuration ---
+// Defines the type and appearance of each tile.
 // ===================================================================
-// Internal logic (do not change). Simple characters are used for the game's logic.
+// Internal logic (do not change). These characters are used for game logic (e.g., in switch statements).
 const char T_START = 'S', T_PROPERTY = 'P', T_CARD = 'C', T_TAX = 'I', T_JAIL = 'J', T_GO_TO_JAIL = 'G', T_PARKING = 'E';
 
+// This array defines the logical type of each of the 20 perimeter tiles.
 const char BOARD_LAYOUT[BOARD_PERIMETER] = {
     T_START, T_PROPERTY, T_CARD, T_PROPERTY, T_TAX, T_GO_TO_JAIL, T_PROPERTY, T_PROPERTY, T_CARD, T_PROPERTY,
-    T_PARKING, T_PROPERTY, T_TAX, T_PROPERTY, T_PROPERTY, T_JAIL, T_CARD, T_PROPERTY, T_PROPERTY, T_PROPERTY};
+    T_PARKING, T_PROPERTY, T_TAX, T_PROPERTY, T_PROPERTY, T_JAIL, T_CARD, T_PROPERTY, T_PROPERTY, T_PROPERTY
+};
 
-// NEW: Visualization with symbols. This array is to show the board more appealing to the eye.
+// This array defines the visual symbol for each tile. Each property set has a distinct emoji.
 const string BOARD_SYMBOLS[BOARD_PERIMETER] = {
-    "🏁", "🏠", "❔", "🏠", "💲", "🚓", "🏠", "🏠", "❔", "🏠",
-    "🅿️", "🏠", "💲", "🏠", "🏠", "👮", "❔", "🏠", "🏠", "🏠"};
+    "🏁", "🏠", "❔", "🏠", "💲", "🚓", // Set 1: 🏠
+    "🏢", "🏢", "❔", "🏢",             // Set 2: 🏢
+    "🅿️", "🏛️", "💲", "🏛️", "🏛️", "👮",  // Set 3: 🏛️
+    "❔", "🏙️", "🏙️", "🏙️"              // Set 4: 🏙️
+};
 
-// --- 3. Properties Settings ---
-// Parallel arrays: The index of each array corresponds to the same slot on the board.
+
+// --- 3. Property Configuration ---
+// Parallel arrays: The index of each array corresponds to the same tile on the board.
 // ===================================================================
-// Names of the properties (Theme of Nicaragua).
+// The names of all properties and tiles on the board.
 const string PROPERTY_NAMES[BOARD_PERIMETER] = {
-    "Exit", "Sandino Avenue", "Surprise Card", "Real Street", "Value Added Tax", "Go to jail",
-    "Inter Plaza", "El Gueguense Roundabout", "Surprise Card", "Bolivar Avenue", "Free Parking",
-    "Masaya Road", "Income Tax", "Camino de Oriente", "Galerias Santo Domingo",
-    "Jail (visiting)", "Surprise card", "Puerto Salvador Allende", "Ruben Dario Theater", "Metrocentro"};
+    "GO!", "Mediterranean Avenue", "Surprise Card", "Baltic Avenue", "Income Tax", "Go To Jail",
+    "St. Charles Place", "Virginia Avenue", "Surprise Card", "St. James Place", "Free Parking",
+    "Tenessee Avenue", "Income Tax", "Kentucky Avenue", "Illinois Avenue",
+    "Jail (just visiting)", "Surprise Card", "Oregon Avenue", "Arkansas Avenue", "California Avenue"
+};
 
-// Purchase prices of each property.
+// The purchase price for each property.
 const int PROPERTY_PRICES[BOARD_PERIMETER] = {
-    0, 60, 0, 60, 0, 0, 100, 100, 0, 120, 0, 140, 0, 140, 160, 0, 0, 180, 180, 200};
+    0, 60, 0, 60, 0, 0, 100, 100, 0, 120, 0, 140, 0, 140, 160, 0, 0, 180, 180, 200
+};
 
-// Rent to be paid for each property.
+// The base rent to be paid for each property.
 const int PROPERTY_RENTS[BOARD_PERIMETER] = {
-    0, 10, 0, 12, 0, 0, 15, 15, 0, 18, 0, 20, 0, 20, 22, 0, 0, 25, 25, 30};
+    0, 10, 0, 12, 0, 0, 15, 15, 0, 18, 0, 20, 0, 20, 22, 0, 0, 25, 25, 30
+};
 
-// --- 4. NEW: Property Sets Configuration (Matrix) ---
-// Defines the groups of properties and the bonus for completing them.
+
+// --- 4. Property Sets Configuration (Matrix) ---
+// Defines the property groups and the bonus for completing them.
 // ===================================================================
-const int RENT_MULTIPLIER = 4; // The rent is multiplied by this value if you have the complete set.
+const int RENT_MULTIPLIER = 4; // Rent is multiplied by this value if a player owns the complete set.
 const int NUM_PROPERTY_SETS = 4;
 const int MAX_PROPS_PER_SET = 3;
 
-// Matrix that defines the sets. Each row is a set. The numbers are the positions on the board.
-// -1 is used to fill sets with less than 3 properties.
+// This matrix defines the property sets. Each row is a set. The numbers are board positions.
+// -1 is used as a null/padding value for sets with fewer than 3 properties.
 const int PROPERTY_SETS[NUM_PROPERTY_SETS][MAX_PROPS_PER_SET] = {
-    {1, 3, -1},   // Set 1: Properties of $60
-    {6, 7, 9},    // Set 2: Properties of $100-$120
-    {11, 13, 14}, // Set 3: Properties of $140-$160
-    {17, 18, 19}  // Set 4: Properties of $180-$200
+    {1, 3, -1},   // Set 1: The $60 properties
+    {6, 7, 9},    // Set 2: The $100-$120 properties
+    {11, 13, 14}, // Set 3: The $140-$160 properties
+    {17, 18, 19}  // Set 4: The $180-$200 properties
 };
 
-#endif
+#endif // CONSTANTS_H

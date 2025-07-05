@@ -42,7 +42,7 @@ GameState setupGame()
 
     clearScreen();
     printAt(2, 1, "========================================");
-    printAt(2, 2, "      WELCOME TO MINIMOPOLY 🏁");
+    printAt(2, 2, "      WELCOME TO MINI - MONOPOLY 🏁");
     printAt(2, 3, "========================================");
 
     if (doesSaveExist())
@@ -117,7 +117,7 @@ void drawUI(GameState gs)
 
     clearScreen();
 
-    string title = " MINIMOPOLY - TURN OF " + currentPlayer.name + " ";
+    string title = " MINI - MONOPOLY - TURN OF " + currentPlayer.name + " ";
     printAt(2, 0, title);
 
     printBoard(gs.players[0], gs.players[1]);
